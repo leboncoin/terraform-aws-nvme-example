@@ -43,7 +43,14 @@ mount UUID="$${VOLUME_UUID}" $${MOUNT_POINT}
 
 echo '---> RollMove Data'
 shopt -s dotglob
-mv $${MOUNT_POINT_BACKUP}/* $${MOUNT_POINT}/
+
+if [ "$(ls -A $${MOUNT_POINT_BACKUP})" ]; then
+    echo "Move date from $${MOUNT_POINT_BACKUP} to $${MOUNT_POINT}"
+    mv $${MOUNT_POINT_BACKUP}/* $${MOUNT_POINT}/
+else
+    echo "$${MOUNT_POINT_BACKUP} is Empty"
+fi
+
 chown --reference=$${MOUNT_POINT_BACKUP} $${MOUNT_POINT}
 chmod --reference=$${MOUNT_POINT_BACKUP} $${MOUNT_POINT}
 rm -r $${MOUNT_POINT_BACKUP}
